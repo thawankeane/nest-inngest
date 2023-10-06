@@ -102,11 +102,12 @@ An unofficial strongly typed [Inngest](https://inngest.com) module for Nest.js p
 
 ## Roadmap
 
-- [ ] Add a global Nest module using the `.forRoot` pattern.
-- [ ] Export a class that accepts an instance of Inngest in the constructor and exposes typed decorators.
-  - [ ] `Function` decorator
-  - [ ] `Trigger` decorator
-- [ ] Add typing helpers.
-  - [ ] Helper for typing the `Context`
+- [x] Add a global Nest module using the `.forRoot` pattern.
+- [x] Export a class that accepts an instance of Inngest in the constructor and exposes typed decorators.
+  - [x] `Function` decorator
+  - [x] `Trigger` decorator
+- [x] Add typing helpers.
+  - [x] Helper for typing the `Context`
 - [ ] Add automated tests.
 - [ ] Add automatic documentation in the AsyncAPI spec. (TBD)
+- [ ] Add Github actions with changelogs and auto releases
