@@ -2,6 +2,7 @@ import { ClientOptions, GetEvents } from "inngest";
 import { AnyInngest } from "inngest/components/Inngest";
 import { Context } from "inngest/types";
 
+import { INNGEST_FUNCTION, INNGEST_TRIGGER } from "@/inngest.module";
 import { ExtractClientOptions } from "@/inngest.types";
 
 export type ExtractInngest<T> = T extends NestInngest<infer I> ? I : never;
@@ -22,7 +23,7 @@ export class NestInngest<TInngest extends AnyInngest> {
       key: string | symbol,
       descriptor: PropertyDescriptor,
     ) => {
-      Reflect.defineMetadata("Inngest_Function", args, descriptor.value);
+      Reflect.defineMetadata(INNGEST_FUNCTION, args, descriptor.value);
       return descriptor;
     };
   }
@@ -46,7 +47,7 @@ export class NestInngest<TInngest extends AnyInngest> {
         >,
       ) => any
     > => {
-      Reflect.defineMetadata("Inngest_Trigger", options, descriptor.value);
+      Reflect.defineMetadata(INNGEST_TRIGGER, options, descriptor.value);
       return descriptor;
     };
   }

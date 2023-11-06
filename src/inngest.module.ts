@@ -7,6 +7,8 @@ import { serve } from "inngest/express";
 
 export const INNGEST_KEY = "INNGEST" as const;
 export const INNGEST_OPTIONS = "INNGEST_OPTIONS" as const;
+export const INNGEST_FUNCTION = "INNGEST_FUNCTION" as const;
+export const INNGEST_TRIGGER = "INNGEST_FUNCTION" as const;
 
 export interface InngestModuleOptions {
   /**
@@ -49,15 +51,23 @@ export class InngestModule implements NestModule {
 
   public async configure(consumer: MiddlewareConsumer) {
     const [functions, triggers] = await Promise.all([
-      this.discover.controllerMethodsWithMetaAtKey("Inngest_Function"),
-      this.discover.controllerMethodsWithMetaAtKey("Inngest_Trigger"),
+      Promise.all([
+        this.discover.controllerMethodsWithMetaAtKey(INNGEST_FUNCTION),
+        this.discover.providerMethodsWithMetaAtKey(INNGEST_FUNCTION),
+      ]),
+      Promise.all([
+        this.discover.controllerMethodsWithMetaAtKey(INNGEST_TRIGGER),
+        this.discover.providerMethodsWithMetaAtKey(INNGEST_TRIGGER),
+      ]),
     ]);
 
-    const handlers = functions.map((func) => {
-      const trigger = triggers.find(
-        (each) =>
-          each.discoveredMethod.handler == func.discoveredMethod.handler,
-      );
+    const handlers = functions.flat().map((func) => {
+      const trigger = triggers
+        .flat()
+        .find(
+          (each) =>
+            each.discoveredMethod.handler == func.discoveredMethod.handler,
+        );
 
       return this.inngest.createFunction(
         // @ts-ignore
