@@ -24,7 +24,7 @@ export interface InngestModuleOptions {
 
 export class InngestModule implements NestModule {
   constructor(
-    private readonly discover: DiscoveryService,
+    @Inject(DiscoveryService) private readonly discover: DiscoveryService,
     @Inject(INNGEST_KEY) private readonly inngest: Inngest,
     @Inject(INNGEST_OPTIONS)
     private readonly options: Omit<InngestModuleOptions, "inngest">,
